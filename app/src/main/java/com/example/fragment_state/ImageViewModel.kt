@@ -6,10 +6,20 @@ import androidx.lifecycle.ViewModel
 
 class ImageViewModel : ViewModel() {
     private val selectedImage = MutableLiveData<Int>()
+    private val images = MutableLiveData<IntArray>()
+
+    var hasSeenSelection = false
 
     fun setSelectedImage(imageId: Int) {
+        hasSeenSelection = false
         selectedImage.value = imageId
     }
 
     fun getSelectedImage() : LiveData<Int> = selectedImage
+
+    fun setImages(newImages: IntArray) {
+        images.value = newImages
+    }
+
+    fun getImages() : LiveData<IntArray> = images
 }

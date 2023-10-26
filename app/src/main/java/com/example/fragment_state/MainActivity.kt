@@ -2,11 +2,15 @@ package com.example.fragment_state
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import androidx.lifecycle.ViewModelProvider
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val imageViewModel = ViewModelProvider(this)[ImageViewModel::class.java]
 
         val randall_images = intArrayOf(
             R.drawable.aquaman,
@@ -27,16 +31,32 @@ class MainActivity : AppCompatActivity() {
             R.drawable.true_story_with_ed___randall
         )
 
-        val imageListFragment = ImageListFragment.newInstance(randall_images)
-        val imageDisplayFragment = ImageDisplayFragment.newInstance(R.drawable.aquaman)
+        imageViewModel.setImages(randall_images)
 
         if (savedInstanceState == null)
             supportFragmentManager
                 .beginTransaction()
-                .add(R.id.imageListFCV, imageListFragment)
-                .add(R.id.imageDisplayFCV, imageDisplayFragment)
+                .add(R.id.imageListFCV, ImageListFragment())
                 .addToBackStack(null)
                 .setReorderingAllowed(true)
                 .commit()
+
+        if (findViewById<View>(R.id.landImageDisplayFCV) != null)
+            supportFragmentManager
+                .beginTransaction()
+                .add(R.id.landImageDisplayFCV, ImageDisplayFragment())
+                .commit()
+
+
+        imageViewModel.getSelectedImage().observe(this){
+            if (!imageViewModel.hasSeenSelection)
+                supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.imageListFCV, ImageDisplayFragment())
+                    .addToBackStack(null)
+                    .setReorderingAllowed(true)
+                    .commit()
+            imageViewModel.hasSeenSelection = true
+        }
     }
 }

@@ -19,11 +19,11 @@ class ImageListFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let { item ->
-            item.getIntArray(IMAGE_ARRAY_KEY)?.let {
-                images = it
-            }
-        }
+//        arguments?.let { item ->
+//            item.getIntArray(IMAGE_ARRAY_KEY)?.let {
+//                images = it
+//            }
+//        }
 
         imageViewModel = ViewModelProvider(requireActivity())[ImageViewModel::class.java]
     }
@@ -40,20 +40,23 @@ class ImageListFragment : Fragment() {
 
         with (view as RecyclerView) {
             layoutManager = GridLayoutManager(requireContext(), 2)
-            adapter = CustomAdapter(images) {
-                imageViewModel.setSelectedImage(it)
+            imageViewModel.getImages().observe(requireActivity()) { it ->
+                adapter = CustomAdapter(it) {
+                    imageViewModel.setSelectedImage(it)
+                }
             }
+
         }
     }
 
-    companion object {
-        fun newInstance(images: IntArray) =
-            ImageListFragment().apply {
-                arguments = Bundle().apply {
-                    putIntArray(IMAGE_ARRAY_KEY, images)
-                }
-            }
-    }
+//    companion object {
+//        fun newInstance(images: IntArray) =
+//            ImageListFragment().apply {
+//                arguments = Bundle().apply {
+//                    putIntArray(IMAGE_ARRAY_KEY, images)
+//                }
+//            }
+//    }
 }
 
 class CustomAdapter(private val images: IntArray, private val callback: (Int)->Unit) : RecyclerView.Adapter<CustomAdapter.MyViewHolder>() {
