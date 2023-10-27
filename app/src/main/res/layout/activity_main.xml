@@ -8,6 +8,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/imageListFCV"
+        android:name="com.example.fragment_state.ImageListFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintEnd_toEndOf="parent"

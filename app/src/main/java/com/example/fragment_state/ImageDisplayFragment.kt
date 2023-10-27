@@ -48,9 +48,9 @@ class ImageDisplayFragment : Fragment() {
 //        }
 //        changeImage(currentImageId)
 
-        imageViewModel.getSelectedImage().observe(requireActivity()) {
-            changeImage(it)
-        }
+        imageViewModel.getSelectedImage().observe(requireActivity()) { changeImage(it) }
+
+
     }
 
 //    override fun onSaveInstanceState(outState: Bundle) {

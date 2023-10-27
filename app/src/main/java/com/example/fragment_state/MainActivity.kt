@@ -12,9 +12,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        isTwoContainers = findViewById<View>(R.id.landImageDisplayFCV) != null
+
 
         val imageViewModel = ViewModelProvider(this)[ImageViewModel::class.java]
+        isTwoContainers = findViewById<View>(R.id.landImageDisplayFCV) != null
 
         val randall_images = intArrayOf(
             R.drawable.aquaman,
@@ -35,34 +36,64 @@ class MainActivity : AppCompatActivity() {
             R.drawable.true_story_with_ed___randall
         )
 
-        val fragment = ImageListFragment()
-
-        if (savedInstanceState == null)
-            supportFragmentManager
-                .beginTransaction()
-                .add(R.id.imageListFCV, fragment)
-                .addToBackStack(null)
-                .setReorderingAllowed(true)
-                .commit()
-
-        if (isTwoContainers)
-            supportFragmentManager
-                .beginTransaction()
-                .add(R.id.landImageDisplayFCV, ImageDisplayFragment())
-                .commit()
-
         imageViewModel.setImages(randall_images)
 
-        imageViewModel.getSelectedImage().observe(this){
-            if (!imageViewModel.hasSeenSelection and !isTwoContainers) {
+//        if (savedInstanceState == null)
+//            imageViewModel.setImages()
+//            supportFragmentManager
+//                .beginTransaction()
+//                .add(R.id.imageListFCV, fragment)
+//                .addToBackStack(null)
+//                .setReorderingAllowed(true)
+//                .commit()
+
+        imageViewModel.getSelectedImage().observe(this) {
+            if (findViewById<View>(R.id.landImageDisplayFCV) != null) {
                 supportFragmentManager
                     .beginTransaction()
-                    .replace(R.id.imageListFCV, ImageDisplayFragment())
+                    .add(R.id.landImageDisplayFCV, ImageDisplayFragment())
                     .addToBackStack(null)
                     .setReorderingAllowed(true)
                     .commit()
-                imageViewModel.hasSeenSelection = true
+
+            } else {
+                if (!imageViewModel.hasSeenSelection) {
+                    supportFragmentManager
+                        .beginTransaction()
+                        .replace(R.id.imageListFCV, ImageDisplayFragment())
+                        .addToBackStack(null)
+                        .setReorderingAllowed(true)
+                        .commit()
+                    imageViewModel.hasSeenSelection = false
+                }
             }
         }
+
+//        if (isTwoContainers)
+//            supportFragmentManager
+//                .beginTransaction()
+//                .add(R.id.landImageDisplayFCV, ImageDisplayFragment())
+//                .addToBackStack(null)
+//                .setReorderingAllowed(true)
+//                .commit()
+//
+
+//
+//        imageViewModel.getSelectedImage().observe(this){
+//            if (findViewById<View>(R.id.landImageDisplayFCV) == null) {
+//                supportFragmentManager
+//                    .beginTransaction()
+//                    .replace(R.id.imageListFCV, ImageDisplayFragment())
+//                    .addToBackStack(null)
+//                    .setReorderingAllowed(true)
+//                    .commit()
+//                imageViewModel.hasSeenSelection = true
+//            } else {
+//                supportFragmentManager
+//                    .beginTransaction()
+//                    .replace(R.id.imageListFCV, ImageListFragment())
+//                    .commit()
+//            }
+//        }
     }
 }
