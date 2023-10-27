@@ -47,53 +47,32 @@ class MainActivity : AppCompatActivity() {
 //                .setReorderingAllowed(true)
 //                .commit()
 
-        imageViewModel.getSelectedImage().observe(this) {
-            if (findViewById<View>(R.id.landImageDisplayFCV) != null) {
+
+
+        if (isTwoContainers)
+            supportFragmentManager
+                .beginTransaction()
+                .add(R.id.landImageDisplayFCV, ImageDisplayFragment())
+                .addToBackStack(null)
+                .setReorderingAllowed(true)
+                .commit()
+
+
+
+        imageViewModel.getSelectedImage().observe(this){
+            if (findViewById<View>(R.id.landImageDisplayFCV) == null && !imageViewModel.hasSeenSelection) {
                 supportFragmentManager
                     .beginTransaction()
-                    .add(R.id.landImageDisplayFCV, ImageDisplayFragment())
+                    .replace(R.id.imageListFCV, ImageDisplayFragment())
                     .addToBackStack(null)
                     .setReorderingAllowed(true)
                     .commit()
-
             } else {
-                if (!imageViewModel.hasSeenSelection) {
-                    supportFragmentManager
-                        .beginTransaction()
-                        .replace(R.id.imageListFCV, ImageDisplayFragment())
-                        .addToBackStack(null)
-                        .setReorderingAllowed(true)
-                        .commit()
-                    imageViewModel.hasSeenSelection = false
-                }
+                supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.imageListFCV, ImageListFragment())
+                    .commit()
             }
         }
-
-//        if (isTwoContainers)
-//            supportFragmentManager
-//                .beginTransaction()
-//                .add(R.id.landImageDisplayFCV, ImageDisplayFragment())
-//                .addToBackStack(null)
-//                .setReorderingAllowed(true)
-//                .commit()
-//
-
-//
-//        imageViewModel.getSelectedImage().observe(this){
-//            if (findViewById<View>(R.id.landImageDisplayFCV) == null) {
-//                supportFragmentManager
-//                    .beginTransaction()
-//                    .replace(R.id.imageListFCV, ImageDisplayFragment())
-//                    .addToBackStack(null)
-//                    .setReorderingAllowed(true)
-//                    .commit()
-//                imageViewModel.hasSeenSelection = true
-//            } else {
-//                supportFragmentManager
-//                    .beginTransaction()
-//                    .replace(R.id.imageListFCV, ImageListFragment())
-//                    .commit()
-//            }
-//        }
     }
 }

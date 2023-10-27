@@ -8,7 +8,7 @@ class ImageViewModel : ViewModel() {
     private val selectedImage = MutableLiveData<Int>()
     private val images = MutableLiveData<IntArray>()
 
-    var hasSeenSelection = true
+    var hasSeenSelection = selectedImage.hasObservers()
 
     fun setSelectedImage(imageId: Int) {
         hasSeenSelection = false
@@ -22,4 +22,5 @@ class ImageViewModel : ViewModel() {
     }
 
     fun getImages() : LiveData<IntArray> = images
+
 }
