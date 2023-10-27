@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 const val IMAGE_ARRAY_KEY = "imageArrayKey"
 
 class ImageListFragment : Fragment() {
-    private lateinit var images : IntArray
+
     lateinit var imageViewModel: ImageViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {

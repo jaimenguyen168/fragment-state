@@ -7,7 +7,6 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/imageListFCV"
-
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintWidth_percent="0.4"
@@ -18,12 +17,11 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/landImageDisplayFCV"
-
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/landListImageFCV"
+        app:layout_constraintStart_toEndOf="@+id/imageListFCV"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout="@layout/fragment_image_display" />
 </androidx.constraintlayout.widget.ConstraintLayout>

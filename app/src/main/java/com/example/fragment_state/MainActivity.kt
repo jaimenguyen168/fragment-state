@@ -6,9 +6,13 @@ import android.view.View
 import androidx.lifecycle.ViewModelProvider
 
 class MainActivity : AppCompatActivity() {
+
+    private var isTwoContainers = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        isTwoContainers = findViewById<View>(R.id.landImageDisplayFCV) != null
 
         val imageViewModel = ViewModelProvider(this)[ImageViewModel::class.java]
 
@@ -31,32 +35,34 @@ class MainActivity : AppCompatActivity() {
             R.drawable.true_story_with_ed___randall
         )
 
-        imageViewModel.setImages(randall_images)
+        val fragment = ImageListFragment()
 
         if (savedInstanceState == null)
             supportFragmentManager
                 .beginTransaction()
-                .add(R.id.imageListFCV, ImageListFragment())
+                .add(R.id.imageListFCV, fragment)
                 .addToBackStack(null)
                 .setReorderingAllowed(true)
                 .commit()
 
-        if (findViewById<View>(R.id.landImageDisplayFCV) != null)
+        if (isTwoContainers)
             supportFragmentManager
                 .beginTransaction()
                 .add(R.id.landImageDisplayFCV, ImageDisplayFragment())
                 .commit()
 
+        imageViewModel.setImages(randall_images)
 
         imageViewModel.getSelectedImage().observe(this){
-            if (!imageViewModel.hasSeenSelection)
+            if (!imageViewModel.hasSeenSelection and !isTwoContainers) {
                 supportFragmentManager
                     .beginTransaction()
                     .replace(R.id.imageListFCV, ImageDisplayFragment())
                     .addToBackStack(null)
                     .setReorderingAllowed(true)
                     .commit()
-            imageViewModel.hasSeenSelection = true
+                imageViewModel.hasSeenSelection = true
+            }
         }
     }
 }
