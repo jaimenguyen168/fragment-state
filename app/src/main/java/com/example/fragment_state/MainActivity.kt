@@ -7,12 +7,12 @@ import androidx.lifecycle.ViewModelProvider
 
 class MainActivity : AppCompatActivity() {
 
-    private var isTwoContainers = false
+    private var hasTwoContainers = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        isTwoContainers = findViewById<View>(R.id.landImageDisplayFCV) != null
+        hasTwoContainers = findViewById<View>(R.id.landImageDisplayFCV) != null
 
         val imageViewModel = ViewModelProvider(this)[ImageViewModel::class.java]
 
@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
                 .setReorderingAllowed(true)
                 .commit()
 
-        if (isTwoContainers)
+        if (hasTwoContainers)
             supportFragmentManager
                 .beginTransaction()
                 .add(R.id.landImageDisplayFCV, ImageDisplayFragment())
@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
         imageViewModel.setImages(randall_images)
 
         imageViewModel.getSelectedImage().observe(this){
-            if (!imageViewModel.hasSeenSelection and !isTwoContainers) {
+            if (!imageViewModel.hasSeenSelection && !hasTwoContainers) {
                 supportFragmentManager
                     .beginTransaction()
                     .replace(R.id.imageListFCV, ImageDisplayFragment())
