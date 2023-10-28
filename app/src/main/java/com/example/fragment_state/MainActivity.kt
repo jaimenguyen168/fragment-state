@@ -41,14 +41,14 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager
                 .beginTransaction()
                 .add(R.id.imageListFCV, fragment)
-                .addToBackStack(null)
-                .setReorderingAllowed(true)
                 .commit()
 
         if (hasTwoContainers)
             supportFragmentManager
                 .beginTransaction()
                 .add(R.id.landImageDisplayFCV, ImageDisplayFragment())
+                .setReorderingAllowed(true)
+                .addToBackStack(null)
                 .commit()
 
         imageViewModel.setImages(randall_images)
@@ -62,6 +62,11 @@ class MainActivity : AppCompatActivity() {
                     .setReorderingAllowed(true)
                     .commit()
                 imageViewModel.hasSeenSelection = true
+            } else {
+                supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.imageListFCV, ImageListFragment())
+                    .commit()
             }
         }
     }
