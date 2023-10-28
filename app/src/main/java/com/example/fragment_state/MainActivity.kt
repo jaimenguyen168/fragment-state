@@ -47,7 +47,12 @@ class MainActivity : AppCompatActivity() {
 //                .setReorderingAllowed(true)
 //                .commit()
 
-
+        /* In this version, I use the default display for ImageListFragment
+        *  The code works until I backPressed on landscape mode then images aren;t displayed when clicking, but the click is still working
+        *  that it's displayed when switching to portrait mode
+        *
+        * Line 73-77 to fix the replace gets called when display image from portrait to landscape
+        * */
 
         if (isTwoContainers)
             supportFragmentManager
@@ -56,8 +61,6 @@ class MainActivity : AppCompatActivity() {
                 .addToBackStack(null)
                 .setReorderingAllowed(true)
                 .commit()
-
-
 
         imageViewModel.getSelectedImage().observe(this){
             if (findViewById<View>(R.id.landImageDisplayFCV) == null && !imageViewModel.hasSeenSelection) {
