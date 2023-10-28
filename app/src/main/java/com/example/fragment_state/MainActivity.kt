@@ -2,12 +2,15 @@ package com.example.fragment_state
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.view.View
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
 class MainActivity : AppCompatActivity() {
 
     private var hasTwoContainers = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -37,24 +40,20 @@ class MainActivity : AppCompatActivity() {
 
         val fragment = ImageListFragment()
 
+        /*
+        * This code implement the landscape mode inside the observer so it change dynamically change in landscape mode
+        * */
+
         if (savedInstanceState == null)
             supportFragmentManager
                 .beginTransaction()
                 .add(R.id.imageListFCV, fragment)
                 .commit()
 
-        if (hasTwoContainers)
-            supportFragmentManager
-                .beginTransaction()
-                .add(R.id.landImageDisplayFCV, ImageDisplayFragment())
-                .setReorderingAllowed(true)
-                .addToBackStack(null)
-                .commit()
-
         imageViewModel.setImages(randall_images)
 
-        imageViewModel.getSelectedImage().observe(this){
-            if (!imageViewModel.hasSeenSelection && !hasTwoContainers) {
+        imageViewModel.getSelectedImage().observe(this) {
+            if (!hasTwoContainers && imageViewModel.display) {
                 supportFragmentManager
                     .beginTransaction()
                     .replace(R.id.imageListFCV, ImageDisplayFragment())
@@ -67,6 +66,18 @@ class MainActivity : AppCompatActivity() {
                     .beginTransaction()
                     .replace(R.id.imageListFCV, ImageListFragment())
                     .commit()
+            }
+
+            if (hasTwoContainers) {
+                if (supportFragmentManager.findFragmentById(R.id.landImageDisplayFCV) == null) {
+                    supportFragmentManager
+                        .beginTransaction()
+                        .add(R.id.landImageDisplayFCV, ImageDisplayFragment())
+                        .setReorderingAllowed(true)
+                        .addToBackStack(null)
+                        .commit()
+                    imageViewModel.display = false
+                }
             }
         }
     }

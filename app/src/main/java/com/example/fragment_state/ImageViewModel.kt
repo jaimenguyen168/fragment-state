@@ -9,9 +9,11 @@ class ImageViewModel : ViewModel() {
     private val images = MutableLiveData<IntArray>()
 
     var hasSeenSelection = false
+    var display = true
 
     fun setSelectedImage(imageId: Int) {
         hasSeenSelection = false
+        display = true
         selectedImage.value = imageId
     }
 
